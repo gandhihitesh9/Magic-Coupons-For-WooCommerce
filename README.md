@@ -1,2 +1,2 @@
-# url_coupons_woocommerce
-url_coupons_woocommerce
+# Magic-Coupons-For-WooCommerce
+Magic-Coupons-For-WooCommerce
