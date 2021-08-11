@@ -7,7 +7,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-if(! class_exists('Magic_Coupons_Settings')) {
+if(! class_exists('Magic_Coupons_Settings')):
 
 class Magic_Coupons_Settings extends WC_Settings_Page {
 
@@ -21,10 +21,6 @@ class Magic_Coupons_Settings extends WC_Settings_Page {
 		$this->id    = 'mcw_url_coupons';
 		$this->label = __( 'URL Coupons', 'magic-coupons-for-woocommerce' );
 		parent::__construct();
-		add_filter( 'woocommerce_admin_settings_sanitize_option', array( $this, 'custom_sanitize' ), PHP_INT_MAX, 3 );
-		// Sections
-		require_once( 'class-mcw-coupons-settings-section.php' );
-		require_once( 'class-mcw-coupons-settings-general.php' );
 	}
 
 	/**
@@ -115,6 +111,19 @@ class Magic_Coupons_Settings extends WC_Settings_Page {
 		$this->reset_settings_based_on_option();
 	}
 
+
+	/**
+	 * Add Hooks.
+	 *
+	 * @version 1.0.0
+	 * @since 1.0.0
+	 */
+	function add_hooks() {
+		add_filter( 'woocommerce_admin_settings_sanitize_option', array( $this, 'custom_sanitize' ), PHP_INT_MAX, 3 );
+		// Sections
+		require_once( 'class-mcw-coupons-settings-section.php' );
+		require_once( 'class-mcw-coupons-settings-general.php' );
+	}
+
 }
-}
-return new Magic_Coupons_Settings();
+endif;

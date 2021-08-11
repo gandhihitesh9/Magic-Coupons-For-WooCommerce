@@ -167,3 +167,11 @@ function mcw_load_plugin() {
 
 // Action to load plugin after the main plugin is loaded
 add_action('plugins_loaded', 'mcw_load_plugin', 15);
+
+require_once(MCW_DIR_PATH . '/includes/magic-coupons-public.php');
+$magic_coupons_public = new Magic_Coupons_Public();
+$magic_coupons_public->add_hooks();
+
+require_once(MCW_DIR_PATH . '/includes/admin/magic-coupons-settings.php');
+$magic_coupons_settings = new Magic_Coupons_Settings();
+$magic_coupons_settings->add_hooks();

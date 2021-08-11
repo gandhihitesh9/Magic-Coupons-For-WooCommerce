@@ -31,7 +31,7 @@ class Magic_Coupon_Admin {
      * @since 1.0.0
      */
     public function mcw_admin_html() {
-        require_once(WOOCC_DIR_PATH . '/includes/admin/html/mcw-settings-html.php');
+        require_once(MCW_DIR_PATH . '/includes/admin/html/mcw-settings-html.php');
     }
     /**
      * Adding Hooks
