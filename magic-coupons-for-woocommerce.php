@@ -159,10 +159,57 @@ function mcw_load_plugin() {
 
 
         // Action to add some style and script
-        add_action('wp_enqueue_scripts', 'mcw_style_css');
-        add_action('admin_enqueue_scripts', 'mcw_admin_scripts');
+        // add_action('wp_enqueue_scripts', 'mcw_style_css');
+        // add_action('admin_enqueue_scripts', 'mcw_admin_scripts');
         
     }
+}
+
+/**
+ * admin.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+function admin() {
+    // Action links
+    add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ),  'action_links' );
+    // Settings
+    add_filter( 'woocommerce_get_settings_pages', 'add_woocommerce_settings_tab' );
+    // Version update
+    if ( get_option( 'magic_coupons_for_woocommerce_version', '' ) !== MCW_VERSION ) {
+        add_action( 'admin_init', 'version_updated' );
+    }
+}
+
+/**
+ * Show action links on the plugin screen.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ *
+ * @param   mixed $links
+ * @return  array
+ */
+function action_links( $links ) {
+    $custom_links = array();
+    $custom_links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=magic_coupons' ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>';
+    if ( 'magic-coupons-for-woocommerce.php' === basename( __FILE__ ) ) {
+        $custom_links[] = '<a target="_blank" style="font-weight: bold; color: green;" href="https://wpexpertplugins.com/item/magic-coupons-for-woocommerce/">' .
+            __( 'Go Pro', 'magic-coupons-for-woocommerce' ) . '</a>';
+    }
+    return array_merge( $custom_links, $links );
+}
+
+/**
+ * Add URL Coupons settings tab to WooCommerce settings.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+function add_woocommerce_settings_tab( $settings ) {
+    $settings[] = require_once( MCW_DIR_PATH .'includes/admin/settings/magic-coupons-settings.php' );
+    return $settings;
 }
 
 // Action to load plugin after the main plugin is loaded
@@ -172,6 +219,6 @@ require_once(MCW_DIR_PATH . '/includes/magic-coupons-public.php');
 $magic_coupons_public = new Magic_Coupons_Public();
 $magic_coupons_public->add_hooks();
 
-require_once(MCW_DIR_PATH . '/includes/admin/magic-coupons-settings.php');
-$magic_coupons_settings = new Magic_Coupons_Settings();
-$magic_coupons_settings->add_hooks();
+if ( is_admin() ) {
+    admin();
+}

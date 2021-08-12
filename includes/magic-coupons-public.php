@@ -84,6 +84,46 @@ class Magic_Coupons_Public {
 		return ( is_cart() ? false : $enabled );
 	}
 
+	function apply_url_coupon() {
+		$key = get_option( 'magic_coupons_key', 'mcw_apply_coupon' );
+		if ( isset( $_GET[ $key ] ) && '' !== $_GET[ $key ] && function_exists( 'WC' ) ) {
+			$coupon_code = sanitize_text_field( $_GET[ $key ] );
+			do_action( 'magic_coupons_before_coupon_applied', $coupon_code, $key );
+			if ( 'yes' === get_option( 'magic_coupons_delay_coupon', 'no' ) ) {
+				// Delay coupon
+				$result  = false;
+				$notices = get_option( 'magic_coupons_delay_coupon_notice', array() );
+				$notices = array_map( 'do_shortcode', $notices );
+				if ( ! WC()->cart->has_discount( $coupon_code ) ) {
+					if ( wc_get_coupon_id_by_code( $coupon_code ) ) {
+						$coupons = WC()->session->get( 'magic_coupons', array() );
+						$coupons[] = $coupon_code;
+						WC()->session->set( 'magic_coupons', array_unique( $coupons ) );
+						$notice = ( isset( $notices['success'] ) ? $notices['success'] : __( 'Coupon code applied successfully.', 'magic-coupons-for-woocommerce' ) );
+						if ( '' != $notice ) {
+							wc_add_notice( str_replace( '%coupon_code%', $coupon_code, $notice ) );
+						}
+						$result = true;
+					} else {
+						$notice = ( isset( $notices['error_not_found'] ) ? $notices['error_not_found'] : __( 'Coupon "%coupon_code%" does not exist!', 'magic-coupons-for-woocommerce' ) );
+						if ( '' != $notice ) {
+							wc_add_notice( str_replace( '%coupon_code%', $coupon_code, $notice ), 'error' );
+						}
+					}
+				} else {
+					$notice = ( isset( $notices['error_applied'] ) ? $notices['error_applied'] : __( 'Coupon code already applied!', 'magic-coupons-for-woocommerce' ) );
+					if ( '' != $notice ) {
+						wc_add_notice( str_replace( '%coupon_code%', $coupon_code, $notice ), 'error' );
+					}
+				}
+			} else {
+				// Apply coupon
+				$result = $this->apply_coupon( $coupon_code, $key );
+			}
+			do_action( 'magic_coupons_after_coupon_applied', $coupon_code, $key, $result );
+		}
+	}
+
 
     /**
 	 * apply_coupon.
