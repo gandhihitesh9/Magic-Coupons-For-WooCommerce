@@ -208,8 +208,18 @@ function action_links( $links ) {
  * @since   1.0.0
  */
 function add_woocommerce_settings_tab( $settings ) {
-    $settings[] = require_once( MCW_DIR_PATH .'includes/admin/settings/magic-coupons-settings.php' );
+    $settings[] = require_once( MCW_DIR_PATH .'/includes/admin/magic-coupons-settings.php' );
     return $settings;
+}
+
+/**
+ * version_updated.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+function version_updated() {
+    update_option( 'alg_wc_url_coupons_version', MCW_VERSION );
 }
 
 // Action to load plugin after the main plugin is loaded

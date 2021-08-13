@@ -49,9 +49,9 @@ class Magic_Coupons_General_Settings extends Magic_Coupons_Settings {
 				'title'    => __( 'URL coupons key', 'magic-coupons-for-woocommerce' ),
 				'desc_tip' => __( 'URL key. If you change this, make sure it\'s unique and is not used anywhere on your site (e.g. by another plugin).', 'magic-coupons-for-woocommerce' ),
 				'desc'     => '<p>' . sprintf( __( 'Your customers can apply shop\'s standard coupons by visiting URL. E.g.: %s.', 'magic-coupons-for-woocommerce' ),
-					'<code>' . site_url() . '/?' . '<strong>' . get_option( 'magic_coupons_key', 'alg_apply_coupon' ) . '</strong>' . '=couponcode' . '</code>' ) . '</p>',
+					'<code>' . site_url() . '/?' . '<strong>' . get_option( 'magic_coupons_key', 'apply_magic_coupon' ) . '</strong>' . '=couponcode' . '</code>' ) . '</p>',
 				'id'       => 'magic_coupons_key',
-				'default'  => 'alg_apply_coupon',
+				'default'  => 'apply_magic_coupon',
 				'type'     => 'text',
 			),
 			array(
@@ -128,9 +128,7 @@ class Magic_Coupons_General_Settings extends Magic_Coupons_Settings {
 		$notice_settings = array(
 			array(
 				'title'    => __( 'Notice Options', 'magic-coupons-for-woocommerce' ),
-				'desc'     => apply_filters( 'magic_coupons_settings',
-					sprintf( 'Disabled (grayed-out) options are available in <a href="%s" target="_blank">URL Coupons for WooCommerce Pro</a> plugin version only.',
-						'https://wpfactory.com/item/url-coupons-woocommerce/' ) ),
+				'desc'     => apply_filters( 'magic_coupons_settings',''),
 				'type'     => 'title',
 				'id'       => 'magic_coupons_notice_options',
 			),

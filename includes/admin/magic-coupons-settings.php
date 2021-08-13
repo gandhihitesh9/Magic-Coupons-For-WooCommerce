@@ -18,13 +18,13 @@ class Magic_Coupons_Settings extends WC_Settings_Page {
      * @since 1.0.0
 	 */
 	function __construct() {
-		$this->id    = 'mcw_url_coupons';
-		$this->label = __( 'URL Coupons', 'magic-coupons-for-woocommerce' );
+		$this->id    = 'magic_coupons';
+		$this->label = __( 'Magic Coupons', 'magic-coupons-for-woocommerce' );
 		parent::__construct();
 		add_filter( 'woocommerce_admin_settings_sanitize_option', array( $this, 'custom_sanitize' ), PHP_INT_MAX, 3 );
 		// Sections
-		require_once( 'class-mcw-coupons-settings-section.php' );
-		require_once( 'class-mcw-coupons-settings-general.php' );
+		require_once( 'magic-coupons-settings-section.php' );
+		require_once( 'magic-coupons-general-settings.php' );
 	}
 
 	/**
