@@ -15,18 +15,6 @@ class Magic_Coupons_Admin
 {
 
     /**
-     *  Add Top Level Menu Page
-     *
-     * @package mcw
-     * @since 1.0.0
-     */
-    // public function mcw_admin_menu() {
-    //     add_menu_page(esc_html__('Category Carousel', "product-cat-carousel"), esc_html__('Procc Shortcode Generator', "product-cat-carousel"), 'manage_options', 'mcw-settings', array($this, "mcw_admin_html"));
-    //     add_submenu_page("mcw-settings", esc_html__('Recently Sold Products', "product-cat-carousel"), esc_html__('Recently Sold Products', "product-cat-carousel"), 'manage_options', 'recently-sold-products-shortcode', array($this, "mcw_rsp_html"));
-
-    // }
-
-    /**
      *  Add Html page for setting page
      *
      * @package mcw
@@ -75,8 +63,6 @@ class Magic_Coupons_Admin
      */
     public function add_hooks()
     {
-        // add_action('admin_menu', array($this, "mcw_admin_menu"));
-
         // Action links
         add_filter('plugin_action_links_' . MCW_BASENAME,  array($this, 'action_links'));
         // Settings

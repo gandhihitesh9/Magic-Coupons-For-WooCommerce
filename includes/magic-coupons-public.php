@@ -84,6 +84,47 @@ class Magic_Coupons_Public {
 		return ( is_cart() ? false : $enabled );
 	}
 
+	/**
+	 * delay_notice.
+	 *
+	 * @version 1.0.0
+	 * @since   1.0.0
+	 *
+	 */
+	function delay_notice( $coupon_code, $key, $result ) {
+		if ( ! $result ) {
+			return;
+		}
+		if ( WC()->cart->is_empty() ) {
+			$all_notices = WC()->session->get( 'wc_notices', array() );
+			wc_clear_notices();
+			WC()->session->set( 'magic_coupons_notices', $all_notices );
+		}
+	}
+
+	/**
+	 * display_delayed_notice.
+	 *
+	 * @version 1.0.0
+	 * @since   1.0.0
+	 */
+	function display_delayed_notice() {
+		if ( function_exists( 'WC' ) && ! WC()->cart->is_empty() && ( $notices = WC()->session->get( 'magic_coupons_notices', array() ) ) && ! empty( $notices ) ) {
+			WC()->session->set( 'magic_coupons_notices', null );
+			WC()->session->set( 'wc_notices', $notices );
+		}
+	}
+
+
+	/**
+	 * apply_url_coupon.
+	 *
+	 * for e.g. http://yourwebsite.com/?mcw_apply_coupon=couponcode
+	 *
+	 * @version 1.0.0
+	 * @since   1.0.0
+	 */
+
 	function apply_url_coupon() {
 		$key = get_option( 'magic_coupons_key', 'mcw_apply_coupon' );
 		if ( isset( $_GET[ $key ] ) && '' !== $_GET[ $key ] && function_exists( 'WC' ) ) {
@@ -131,7 +172,6 @@ class Magic_Coupons_Public {
 	 * @version 1.0.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [next] (dev) use `WC()->cart->apply_coupon()` instead of `WC()->cart->add_discount()`
 	 */
 	function apply_coupon( $coupon_code, $key ) {
 		$result = WC()->cart->add_discount( $coupon_code );
@@ -150,8 +190,6 @@ class Magic_Coupons_Public {
         if ( 'yes' === get_option( 'magic_coupons_enabled', 'yes' ) ) {
 			// Apply URL coupon
 			add_action( 'wp_loaded', array( $this, 'apply_url_coupon' ), ( '' !== ( $priority = get_option( 'magic_coupons_priority', '' ) ) ? $priority : PHP_INT_MAX ) );
-			add_action( 'magic_coupons_before_coupon_applied', array( $this, 'maybe_force_start_session' ), 10 );
-			add_action( 'magic_coupons_before_coupon_applied', array( $this, 'maybe_set_additional_cookie' ), 11 );
 			// Delay coupon
 			if ( 'yes' === get_option( 'magic_coupons_delay_coupon', 'no' ) ) {
 				add_action( 'woocommerce_add_to_cart', array( $this, 'apply_delayed_coupon' ), PHP_INT_MAX, 6 );
@@ -168,10 +206,6 @@ class Magic_Coupons_Public {
 			}
 			if ( 'yes' === get_option( 'magic_coupons_checkout_hide_coupon', 'no' ) ) {
 				add_filter( 'woocommerce_coupons_enabled', array( $this, 'hide_coupon_field_on_checkout' ), PHP_INT_MAX );
-			}
-			// Force coupon redirect
-			if ( 'yes' === get_option( 'magic_coupons_add_to_cart_action_force_coupon_redirect', 'no' ) ) {
-				add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_action_force_coupon_redirect' ), PHP_INT_MAX, 2 );
 			}
 			// WP Rocket: Disable empty cart caching
 			if ( 'yes' === get_option( 'magic_coupons_wp_rocket_disable_cache_wc_empty_cart', 'no' ) ) {
