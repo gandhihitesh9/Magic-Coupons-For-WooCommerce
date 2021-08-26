@@ -199,7 +199,6 @@ class Magic_Coupons_Public {
 				add_action( 'magic_coupons_coupon_applied', array( $this, 'delay_notice' ), 10, 3 );
 				add_action( 'wp_head', array( $this, 'display_delayed_notice' ) );
 			}
-			add_action( 'magic_coupons_after_coupon_applied', array( $this, 'redirect' ), PHP_INT_MAX, 3 );
 			// Hide coupons
 			if ( 'yes' === get_option( 'magic_coupons_cart_hide_coupon', 'no' ) ) {
 				add_filter( 'woocommerce_coupons_enabled', array( $this, 'hide_coupon_field_on_cart' ), PHP_INT_MAX );

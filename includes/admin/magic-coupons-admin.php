@@ -14,17 +14,6 @@ if (!defined('ABSPATH')) {
 class Magic_Coupons_Admin
 {
 
-    /**
-     *  Add Html page for setting page
-     *
-     * @package mcw
-     * @since 1.0.0
-     */
-    public function mcw_admin_html()
-    {
-        require_once(MCW_DIR_PATH . '/includes/admin/html/mcw-settings-html.php');
-    }
-
 
     /**
      * Show action links on the plugin screen.
